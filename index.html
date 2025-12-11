@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Royal Star - Acceso Oficial</title>
     <style>
         /* ESTILO GENERAL */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Fuente nativa de iOS/Android para mejor carga */
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: #ffffff;
             margin: 0;
@@ -18,21 +18,29 @@
             min-height: 100vh;
             text-align: center;
             flex-direction: column;
+            overflow-x: hidden; /* Previene desplazamiento horizontal */
         }
 
-        /* AVISO PARA SALIR DE INSTAGRAM (Oculto por defecto) */
+        /* --- CORRECCIÓN DEL AVISO ROJO --- */
         #instagram-warning {
-            display: none; /* Se activa solo si detecta Instagram */
+            display: none; /* Se activa via JS */
             background-color: #ff4757;
             color: white;
-            width: 100%;
-            padding: 15px;
+            
+            /* ESTOS SON LOS CAMBIOS CLAVE */
             position: fixed;
             top: 0;
             left: 0;
+            right: 0; /* Anclamos a izquierda Y derecha en lugar de width: 100% */
+            width: auto; 
+            padding: 15px 10px; /* Un poco menos de padding lateral */
+            box-sizing: border-box; /* IMPORTANTE: Hace que el padding no agrande la caja */
+            text-align: center; /* Texto centrado se ve mejor */
+            
             z-index: 9999;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px; /* Un pelín más chico para que entre mejor */
+            line-height: 1.4;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             animation: slideDown 0.5s ease-out;
         }
@@ -45,17 +53,21 @@
         .container {
             width: 90%;
             max-width: 450px;
-            padding: 40px 20px;
+            padding: 35px 20px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Soporte para iOS */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
-            margin-top: 50px; /* Espacio por si sale el aviso */
+            
+            /* Aumentamos un poco el margen superior por si el cartel ocupa 2 líneas */
+            margin-top: 70px; 
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 26px;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -64,9 +76,9 @@
         }
 
         .subtitle {
-            font-size: 16px;
+            font-size: 15px;
             color: #e0e0e0;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             line-height: 1.5;
             font-weight: 300;
         }
@@ -74,25 +86,28 @@
         .btn-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
 
         .btn {
             display: block;
             text-decoration: none;
-            padding: 18px;
-            font-size: 18px;
+            padding: 16px; /* Un poco menos de padding para que no sean gigantes en iPhone SE */
+            font-size: 17px;
             font-weight: bold;
             border-radius: 12px;
             transition: all 0.1s;
             position: relative;
             text-transform: uppercase;
             top: 0;
+            /* Prevenir selección de texto en el botón al tocar */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         @keyframes glow {
             0% { filter: brightness(100%); transform: scale(1); }
-            50% { filter: brightness(120%); transform: scale(1.03); }
+            50% { filter: brightness(120%); transform: scale(1.02); }
             100% { filter: brightness(100%); transform: scale(1); }
         }
 
@@ -104,14 +119,15 @@
         .btn:active {
             top: 4px;
             box-shadow: 0px 0px 0px !important;
+            transform: scale(0.98) !important; /* Pequeño efecto de achique al tocar */
         }
 
-        .btn-violet { background-color: #8A2BE2; color: white; box-shadow: 0px 6px 0px #4B0082; }
-        .btn-yellow { background-color: #FFD700; color: #333; box-shadow: 0px 6px 0px #B8860B; }
-        .btn-blue { background-color: #1E90FF; color: white; box-shadow: 0px 6px 0px #0000CD; }
+        .btn-violet { background-color: #8A2BE2; color: white; box-shadow: 0px 5px 0px #4B0082; }
+        .btn-yellow { background-color: #FFD700; color: #333; box-shadow: 0px 5px 0px #B8860B; }
+        .btn-blue { background-color: #1E90FF; color: white; box-shadow: 0px 5px 0px #0000CD; }
 
-        .footer-text { margin-top: 40px; font-size: 14px; color: #aaa; font-weight: 600; }
-        .legal { margin-top: 10px; font-size: 11px; color: #777; }
+        .footer-text { margin-top: 35px; font-size: 13px; color: #aaa; font-weight: 600; }
+        .legal { margin-top: 8px; font-size: 10px; color: #777; }
 
     </style>
 </head>
@@ -136,36 +152,38 @@
     </div>
 
     <script>
-        // Función para detectar si es Instagram o Facebook
-        function isInstagramBrowser() {
+        function isInAppBrowser() {
             var ua = navigator.userAgent || navigator.vendor || window.opera;
-            return (ua.indexOf("Instagram") > -1) || (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+            // Detecta Instagram, Facebook y Messenger en iOS y Android
+            return (ua.indexOf("Instagram") > -1) || (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("Messenger") > -1);
         }
 
-        // Función para detectar si es Android
         function isAndroid() {
             return /Android/i.test(navigator.userAgent);
         }
 
-        // Ejecutar al cargar
         window.onload = function() {
-            if (isInstagramBrowser()) {
-                // 1. Mostrar el cartel rojo de advertencia
-                document.getElementById('instagram-warning').style.display = 'block';
+            // Si estamos dentro de la app de Instagram/Facebook...
+            if (isInAppBrowser()) {
+                // 1. Mostrar el cartel rojo corregido
+                var warningBanner = document.getElementById('instagram-warning');
+                warningBanner.style.display = 'block';
+                
+                // Ajuste dinámico: si el banner es muy alto (2 líneas), bajamos más el contenedor
+                if (warningBanner.offsetHeight > 60) {
+                     document.querySelector('.container').style.marginTop = (warningBanner.offsetHeight + 20) + 'px';
+                }
 
-                // 2. Si es Android, intentamos cambiar los links para forzar Chrome
+                // 2. Solo para Android: Intentar forzar Chrome externo
                 if (isAndroid()) {
-                    // Modificar los enlaces para usar el esquema googlechrome://
-                    // Esto intenta abrir la app de Chrome directamente
                     var urls = [
                         {id: 'btn1', url: 'ganamosnet.io'},
                         {id: 'btn2', url: 'gananencasa.online'},
                         {id: 'btn3', url: 'luckybet.site'}
                     ];
-
                     urls.forEach(function(item) {
                         var el = document.getElementById(item.id);
-                        // El esquema intent:// o googlechrome:// ayuda a "saltar" la app
+                        // Usamos el esquema intent:// para forzar la salida de la app
                         el.href = "intent://" + item.url + "#Intent;scheme=https;package=com.android.chrome;end";
                     });
                 }
