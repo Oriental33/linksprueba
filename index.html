@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Star - Acceso Oficial</title>
+    <style>
+        /* ESTILO GENERAL - FONDO PREMIUM */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px; /* Ancho ideal para celulares */
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05); /* Fondo semitransparente */
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* TÍTULOS */
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffd700; /* Dorado para "Royal Star" */
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #e0e0e0;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        /* ESTILOS DE LOS BOTONES 3D */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            transition: all 0.1s;
+            position: relative;
+            text-transform: uppercase;
+            /* Efecto 3D (Sombra dura abajo) */
+            top: 0;
+        }
+
+        /* EFECTO DE "TITILEO" O BRILLO AL PASAR EL MOUSE */
+        @keyframes glow {
+            0% { filter: brightness(100%); transform: scale(1); }
+            50% { filter: brightness(120%); transform: scale(1.03); }
+            100% { filter: brightness(100%); transform: scale(1); }
+        }
+
+        .btn:hover {
+            animation: glow 1.5s infinite; /* El efecto de titileo suave */
+            cursor: pointer;
+        }
+
+        /* EFECTO CLICK (HUNDIR EL BOTÓN) */
+        .btn:active {
+            top: 4px; /* Se mueve hacia abajo */
+            box-shadow: 0px 0px 0px !important; /* Desaparece la sombra 3D */
+        }
+
+        /* COLORES ESPECÍFICOS */
+        
+        /* 1. GANAMOSNET (VIOLETA MODERNO) */
+        .btn-violet {
+            background-color: #8A2BE2;
+            color: white;
+            box-shadow: 0px 6px 0px #4B0082; /* Sombra 3D más oscura */
+        }
+
+        /* 2. GANANENCASA (AMARILLO) */
+        .btn-yellow {
+            background-color: #FFD700;
+            color: #333; /* Texto oscuro para contraste */
+            box-shadow: 0px 6px 0px #B8860B; /* Sombra 3D más oscura */
+        }
+
+        /* 3. LUCKYBET (AZUL) */
+        .btn-blue {
+            background-color: #1E90FF;
+            color: white;
+            box-shadow: 0px 6px 0px #0000CD; /* Sombra 3D más oscura */
+        }
+
+        /* PIE DE PÁGINA */
+        .footer-text {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .legal {
+            margin-top: 10px;
+            font-size: 11px;
+            color: #777;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Royal Star</h1>
+        
+        <p class="subtitle">El lugar que elige todo Uruguay para apostar tranquilo y divertirse.</p>
+
+        <div class="btn-container">
+            
+            <a href="https://ganamosnet.io" class="btn btn-violet" target="_blank">
+                IR A GANAMOS
+            </a>
+
+            <a href="https://gananencasa.online" class="btn btn-yellow" target="_blank">
+                IR A GANAN EN CASA
+            </a>
+
+            <a href="https://luckybet.site" class="btn btn-blue" target="_blank">
+                IR A LUCKYBET
+            </a>
+
+        </div>
+
+        <p class="footer-text">Plataformas exclusivas para Uruguay 🇺🇾</p>
+        
+        <p class="legal">+18 | El juego compulsivo es perjudicial para la salud.</p>
+    </div>
+
+</body>
+</html>
